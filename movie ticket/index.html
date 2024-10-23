@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body style="margin: 0">
+    <div style="text-align: center;"><h1 >Book movie </h1>
+        <p>Total count: <span id="totalCount">0</span></p> 
+        <lable for ="search">Check slot</lable>
+        <input type="number" name="search" id="search" max="100" min="1">
+    </div>
+    <hr>
+    
+    <form onsubmit="handleFormSubmit(event)">
+       
+        <hr>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" />
+        <label for="slot">Slot</label>
+        <input type="number" name="slot" id="slot">
+        <button type="submit">Book Slot</button>
+
+
+    </form>
+  <ul id="listItem" class="list"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+
+</html>
