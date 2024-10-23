@@ -1,10 +1,16 @@
 window.addEventListener("DOMContentLoaded",function(event){
-    event.preventDefault();
-    for(let i=0;i<localStorage.length;i++){
-        const saveITem=JSON.parse(this.localStorage.getItem(this.localStorage.key(i)))
-        displayUserOnScreen(saveITem)
-    }
-})
+    
+    readItems();
+});
+
+
+function readItems() {
+    axios.get("https://crudcrud.com/api/6db63175cce445ffb221d41838c24e95/arpit")
+    .then((res) => {
+        res.data.forEach(item =>{ displayUserOnScreen(item)});
+    })
+    .catch((err) => console.log(err));
+}
 
 function handleFormSubmit(event) {
     event.preventDefault();
@@ -19,9 +25,12 @@ function handleFormSubmit(event) {
         "Price":price.value,
         "Quantity":quantity.value
     }
-    localStorage.setItem(myobj.Name,JSON.stringify(myobj))
-    console.log(myobj)
-    displayUserOnScreen(myobj)
+    axios.post("https://crudcrud.com/api/6db63175cce445ffb221d41838c24e95/arpit",myobj
+    ).then((res)=>{
+        
+        displayUserOnScreen(res.data)
+    }).catch((rej)=>console.log(rej))
+    
     
 }
 function displayUserOnScreen(obj){
@@ -36,7 +45,7 @@ function displayUserOnScreen(obj){
     btn3.className="but3"
     const list=document.createElement("li")
     const ul=document.getElementById('listItem')
-    list.innerHTML=`${obj.Name}-${obj.Des}-${obj.Price}-<span id="qty-${obj.Name}">${obj.Quantity}</span>`
+    list.innerHTML=`${obj.Name}-${obj.Des}-${obj.Price}-<span id="qty-${obj._id}">${obj.Quantity}</span>`
     list.appendChild(btn1)
     list.appendChild(btn2)
     list.appendChild(btn3)
@@ -53,17 +62,32 @@ function displayUserOnScreen(obj){
 
 }
 function functionHandle(obj,key){
-    const itemfrom=JSON.parse(localStorage.getItem(obj.Name))
-    if (!itemfrom)return ;
-    const currentQuantity=itemfrom.Quantity;
-    if (currentQuantity>=key){
-        itemfrom.Quantity-=key;
-        localStorage.setItem(itemfrom.Name,JSON.stringify(itemfrom))
-    }
-    const qultiyItem=document.getElementById(`qty-${itemfrom.Name}`)
-    if(qultiyItem){
-        qultiyItem.innerHTML=itemfrom.Quantity
-    }
+    axios.get(`https://crudcrud.com/api/6db63175cce445ffb221d41838c24e95/arpit/${obj._id}`)
+    .then((res)=>{
+        const itemfrom=res.data
+        if (!itemfrom) {
+            return
+        }
+        const currentQuality=itemfrom.Quantity
+        if (currentQuality>=key){
+            
+            itemfrom.Quantity -= key;
+            axios.put(`https://crudcrud.com/api/6db63175cce445ffb221d41838c24e95/arpit/${obj._id}`,{
+                Quantity:itemfrom.Quantity
+            }).then(()=>{
+                const udateTheQuantity=document.getElementById(`qty-${itemfrom._id}`)
+                if (udateTheQuantity){
+                    udateTheQuantity.innerHTML=itemfrom.Quantity
+                }
+            }).catch(()=>{
+                console.log("Error")
+            })
+        }else{
+            alert("not have the quantity")
+        }
+    }).catch((rej)=>{
+        console.log(rej)
+    })
     
 }
 
