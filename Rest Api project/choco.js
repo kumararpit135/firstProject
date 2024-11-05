@@ -45,7 +45,7 @@ function displayUserOnScreen(obj){
     btn3.className="but3"
     const list=document.createElement("li")
     const ul=document.getElementById('listItem')
-    list.innerHTML=`${obj.Name}-${obj.Des}-${obj.Price}-<span id="qty-${obj._id}">${obj.Quantity}</span>`
+    list.innerHTML=`${obj.Name}-${obj.Des}-${obj.Price}-<ul id="qty-${obj._id}">${obj.Quantity}</ul>`
     list.appendChild(btn1)
     list.appendChild(btn2)
     list.appendChild(btn3)

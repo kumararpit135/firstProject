@@ -2,7 +2,7 @@ let totalCount=0;
 const bookedSlots= new Set();
 window.addEventListener("DOMContentLoaded",(event)=>{
     event.preventDefault();
-    axios.get("https://crudcrud.com/api/ee2952a6465344978feed90f81f57716/movieTicket").
+    axios.get("https://crudcrud.com/api/993f95c61f93408badec5f6434b8f7db/movieTicket").
     then((res)=>{
         totalCount=res.data.length
         for(let i=0; i<res.data.length;i++){
@@ -28,10 +28,11 @@ function handleFormSubmit(event) {
             alert("you can not book This slot")
             console.log(bookedSlots)
         }else{
-            axios.post("https://crudcrud.com/api/ee2952a6465344978feed90f81f57716/movieTicket",userDetails).
+            axios.post("https://crudcrud.com/api/993f95c61f93408badec5f6434b8f7db/movieTicket",userDetails).
                 then((res)=>{
                     totalCount++
                     bookedSlots.add(res.data.Slot)
+                    updateTotalCountDisplay()
                     displayUserOnScreen(res.data)
                     console.log(bookedSlots)
                 }).catch((rej)=>{
@@ -46,11 +47,7 @@ function handleFormSubmit(event) {
   
   function displayUserOnScreen(userDetails) {
     const userItem = document.createElement("li");
-    userItem.appendChild(
-      document.createTextNode(
-        `${userDetails.name} - ${userDetails.Slot}`
-    )
-    );
+    userItem.appendChild(document.createTextNode(`${userDetails.name} - ${userDetails.Slot}`));
   
     const deleteBtn = document.createElement("button");
     deleteBtn.appendChild(document.createTextNode("Delete"));
@@ -70,7 +67,7 @@ function handleFormSubmit(event) {
         userItem.remove()
         bookedSlots.delete(userDetails.Slot)
         updateTotalCountDisplay()
-        axios.delete(`https://crudcrud.com/api/ee2952a6465344978feed90f81f57716/movieTicket/${userDetails._id}`)
+        axios.delete(`https://crudcrud.com/api/993f95c61f93408badec5f6434b8f7db/movieTicket/${userDetails._id}`)
         .catch((rej) => console.log(rej));
 
     })
@@ -81,7 +78,7 @@ function handleFormSubmit(event) {
         bookedSlots.delete(userDetails.Slot)
         totalCount--
         updateTotalCountDisplay()
-        axios.delete(`https://crudcrud.com/api/ee2952a6465344978feed90f81f57716/movieTicket/${userDetails._id}`)
+        axios.delete(`https://crudcrud.com/api/993f95c61f93408badec5f6434b8f7db/movieTicket/${userDetails._id}`)
         .catch((rej) => console.log(rej));
 
     })
@@ -89,7 +86,7 @@ function handleFormSubmit(event) {
   
 }
 function updateTotalCountDisplay() {
-    const totalCountDisplay = document.getElementById("totalCount");
+    const totalCountDisplay = document.getElementById("totalCount");        
     totalCountDisplay.innerText = totalCount; 
 }
 
