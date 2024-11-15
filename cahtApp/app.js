@@ -2,7 +2,6 @@ const bodyParser = require('body-parser');
 const express=require('express');
 const fs=require('fs')
 const app=express()
-const ar=[]
 app.use(bodyParser.urlencoded({extended:false}))
 app.get('/login',(req,res,next)=>{
     res.write('<html>')
@@ -45,15 +44,12 @@ app.get('/',(req,res,next)=>{
             <input type="text" id="message" name="message">
             <input type="hidden" id="username" name="username">
             <button type="submit">Send</button></form>
-            <script>
-                
+            <script> 
                 document.querySelector('form').onsubmit = function(event){
                     const username = localStorage.getItem('username');
                     document.getElementById('username').value = username;
                 }
-            </script>
-
-        `);
+            </script>`);
         res.write('</body>');
         res.write('</html>');
         
