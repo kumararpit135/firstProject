@@ -3,9 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="styleSheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>fhasdjfhkashfjs</h1>
+    <div>
+        <h1>Enter the details</h1>
+        <form id="test">
+            
+            <hr>
+            <label for="name">NAME:</label>
+            <input type="text" id="name" name="name">
+            <hr>
+            <label for="date">DATE:</label>
+            <input type="date" id="date" name="date">
+            <hr>
+            <label for="url">URL:</label>
+            <input type="url" id="url" name="url">
+            <hr>
+            <label for="birthplace">Birthplace:</label>
+            <input type="text" id="birthplace" name="birthplace">
+            <hr>
+            <label for="carrer">Carrer:</label>
+            <input type="text" id="carrer" name="carrer">
+            <hr>
+            <label for="match">Match:</label>
+            <input type="text" id="match" name="match">
+            <hr>
+            <label for="score">Score:</label>
+            <input type="number" id="score" name="score">
+            <hr>
+            <label for="fifties">Fifties:</label>
+            <input type="number" id="fifties" name="fifties">
+            <hr>
+            <label for="centuries">Centuries</label>
+            <input type="number" id="centuries" name="centuries">
+            <hr>
+            <label for="wicket">Wicker:</label>
+            <input type="number" id="wicket" name="wicket">
+            <hr>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age">
+
+            <button type="submit">ADDDDDDD</button>
+            <hr>
+
+        </form>
+    </div>
+    <hr>
+    <form id="searchhere">
+        <label for="search">Search by name</label>
+        <input type="text" id="search" name="name">
+        <button type="submit">Search here</button>
+        <hr><hr>
+    </form>
+    <div >
+        <ul id="showhere"></ul>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        const show =document.getElementById('showhere')
+        const form=document.getElementById('test')
+        const search=document.getElementById('searchhere')
+        search.addEventListener('submit', (event) => {
+            console.log('hhihihdfsdihf')
+            event.preventDefault()
+            const searchName= document.getElementById('search').value
+            console.log(searchName)
+           axios.get(`http://localhost:3000/playername/${searchName}`)
+                .then(result => {
+                    console.log(result.data)
+                    for (let i=0;i<result.data.length;i++){
+                    display(result.data[i])
+                    }   
+                })
+                .catch(err => console.log(err));
+        });
+        
+        form.addEventListener('submit',(event)=>{
+            event.preventDefault()
+            let myobj={
+                name:document.getElementById('name').value,
+                date:document.getElementById('date').value,
+                url:document.getElementById('url').value,
+                birthplace:document.getElementById('birthplace').value,
+                carrer:document.getElementById('carrer').value,
+                match:document.getElementById('match').value,
+                score:document.getElementById('score').value,
+                fifties:document.getElementById('fifties').value,
+                centuries:document.getElementById('centuries').value,
+                wicket:document.getElementById('wicket').value,
+                age:document.getElementById('age').value,
+                
+            }
+            axios.post('http://localhost:3000/add',myobj)
+            .then(result=>{
+
+                console.log('done post req')
+                fetchDeatils()
+            }).catch(err=>{
+                console.log('not able to sent to post request ')
+            })
+            display(myobj)
+    
+        })
+        function fetchDeatils(){
+            axios.get('http://localhost:3000/info').then(res=>{
+                console.log('in get ')
+                show.innerHTML=""
+                for (let i=0;i<res.data.length;i++){
+                    display(res.data[i])
+                }
+            }).catch(err=>{
+                console.log("not able to send get request ")
+            })
+        }
+        function display(obj){
+            
+            const editbtn=document.createElement('button');
+            editbtn.textContent="Edit"
+            const li=document.createElement('li');
+            li.innerHTML=`<p>- player name=${obj.name}</P>- <p>DATE OF BIRTH=${obj.date}</>-<p><img src="${obj.url}" alt="photo" wight="200px"></P> 
+            <p>-Players bithplace${obj.birthplace}</p> <p>players carrer${obj.carrer}</p> players Matches-${obj.match}-</p>
+            <p>players score${obj.score}</p>- <p> life time fifties${obj.fifties}</p>-<p>players centuries=${obj.centuries}</p>-<p>players wicket=${obj.wicket}</p>-<p>players age=${obj.age}</p>`;
+            
+            li.appendChild(editbtn);
+            show.appendChild(li)
+           
+            editbtn.addEventListener('click',()=>{
+                Edit(obj)
+            })   
+        }
+        
+        function Edit(myobj){
+            
+            document.getElementById('name').value=myobj.name
+            document.getElementById('date').value=myobj.date
+            document.getElementById('url').value=myobj.url
+            document.getElementById('birthplace').value=myobj.birthplace
+            document.getElementById('carrer').value=myobj.carrer;
+            document.getElementById('match').value=myobj.match
+            document.getElementById('score').value=myobj.score;
+            document.getElementById('fifties').value=myobj.fifties;
+            document.getElementById('centuries').value=myobj.centuries;
+            document.getElementById('wicket').value=myobj.wicket;
+            document.getElementById('age').value=myobj.age;
+            const id=myobj.id
+            axios.delete(`http://localhost:3000/remove/${id}`)
+            .then(result=>{
+                
+
+                fetchDeatils()
+            }
+            ).catch(err=>{
+                console.log(err)
+            })
+           console.log('yes you can edit this one ')
+        }
+        
+        
+    </script>
+    
 </body>
+
 </html>
